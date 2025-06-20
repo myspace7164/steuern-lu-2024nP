@@ -98,7 +98,22 @@ in stdenv.mkDerivation rec {
       --prefix PATH : ${jdk17}/bin \
       --prefix LD_LIBRARY_PATH : ${lib.makeLibraryPath buildInputs} \
       --set-default TZ Europe/Zurich
-  '';
+
+    # Install desktop entry and icon
+    mkdir -p $out/share/applications
+    cat > $out/share/applications/steuern-lu-2024.desktop <<EOF
+[Desktop Entry]
+Type=Application
+Name=steuern.lu.2024 nP
+Exec=$out/bin/steuern-lu-2024
+Icon=steuern-lu-2024
+Categories=Office;
+Terminal=false
+EOF
+
+    mkdir -p $out/share/icons/hicolor/256x256/apps
+    cp "$out/opt/app.png" "$out/share/icons/hicolor/256x256/apps/steuern-lu-2024.png"
+'';
 
   meta = with lib; {
     description = "Tax declaration software 2024 for the canton of Lucerne";
